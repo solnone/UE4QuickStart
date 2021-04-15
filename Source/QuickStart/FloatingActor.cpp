@@ -33,7 +33,10 @@ void AFloatingActor::BeginPlay()
 
 	if (Points.Num() == 0)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("No points data"));
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("No points data"));
+		}
 		Points.Add(FVector(1.0f, 2.0f, 3.0f));
 	}
 
