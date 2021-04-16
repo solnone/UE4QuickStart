@@ -12,6 +12,7 @@
 
 * [hacking C++](https://hackingcpp.com/)
 * [C++ Quick Reference Sheet - Hoomanb.com](https://www.slideshare.net/FrescatiStory/c-quick-reference-sheet-from-hoomanbcom)
+* [C++ Language Reference - Microsoft](https://docs.microsoft.com/en-us/cpp/cpp/cpp-language-reference)
 * [cplusplus.com](http://www.cplusplus.com/)
 * [C++ Reference Card - gbook.org](https://www.cs.ccu.edu.tw/~damon/oop/,c++refcard.pdf)
 * [20 Most Useful C and C++ Cheat Sheets | 2021 Edition - rankred.com](https://www.rankred.com/useful-c-cheat-sheets/)
