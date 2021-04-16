@@ -69,3 +69,11 @@ void AFloatingActor::Tick(float DeltaTime)
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("%f: Location(%f, %f, %f)"), GetWorld()->TimeSeconds, NewLocation.X, NewLocation.Y, NewLocation.Z));
 	}
 }
+
+void AFloatingActor::Move(FVector Offset) 
+{
+	FVector NewLocation = GetActorLocation();
+	NewLocation += Offset;
+	SetActorLocation(NewLocation);
+	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, FString::Printf(TEXT("%f: Location(%f, %f, %f)"), GetWorld()->TimeSeconds, NewLocation.X, NewLocation.Y, NewLocation.Z));
+}
