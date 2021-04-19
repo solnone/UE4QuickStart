@@ -4,16 +4,26 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/BoxComponent.h"
 #include "FloatingActor.generated.h"
+
+class UBoxComponent;
+class UStaticMeshComponent;
 
 UCLASS()
 class QUICKSTART_API AFloatingActor : public AActor
 {
 	GENERATED_BODY()
-	
+
+private:
+	float TickTime = 0.0f;
+
 public:	
 	// Sets default values for this actor's properties
 	AFloatingActor();
+
+	UPROPERTY(VisibleAnywhere)
+	UBoxComponent* BoxComponent;
 
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* VisualMesh;

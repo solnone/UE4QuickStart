@@ -7,15 +7,21 @@ AFloatingActor::AFloatingActor()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+    BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollider"));
+    BoxComponent->SetBoxExtent(FVector(64.0f, 64.0f, 64.0f));
+    RootComponent = BoxComponent;
+	
 	// StaticMesh
 	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	VisualMesh->SetupAttachment(RootComponent);
 
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeVisualAsset(TEXT("/Engine/BasicShapes/Cube.Cube"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshAsset(TEXT("/Engine/BasicShapes/Cube.Cube"));
+	// static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeVisualAsset(TEXT("/Engine/BasicShapes/Cube.Cube"));
 
-	if (CubeVisualAsset.Succeeded())
+	if (MeshAsset.Succeeded())
 	{
-		VisualMesh->SetStaticMesh(CubeVisualAsset.Object);
+		VisualMesh->SetStaticMesh(MeshAsset.Object);
 		VisualMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 
 		static ConstructorHelpers::FObjectFinder<UMaterial> FoundMaterial(TEXT("/Engine/MapTemplates/Sky/Desert_Outer_HDR_Mat.Desert_Outer_HDR_Mat"));
@@ -45,7 +51,6 @@ void AFloatingActor::BeginPlay()
 	{
 		UE_LOG(LogTemp, Display, TEXT("Point (%f, %f, %f)"), vector.X, vector.Y, vector.Z);
 	}
-
 	// Show Float Speed and Rotation Speed
 	UE_LOG(LogTemp, Display, TEXT("Float Speed = %f, Rotation Speed = %f"), FloatSpeed, RotationSpeed);
 }
@@ -55,6 +60,8 @@ void AFloatingActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	TickTime += DeltaTime;
+
 	FVector NewLocation = GetActorLocation();
 	FRotator NewRotation = GetActorRotation();
 	float RunningTime = GetGameTimeSinceCreation();
@@ -63,17 +70,23 @@ void AFloatingActor::Tick(float DeltaTime)
 	float DeltaRotation = DeltaTime * RotationSpeed; // Rotate by RotationSpeed degrees per second
 	NewRotation.Yaw += DeltaRotation;
 	SetActorLocationAndRotation(NewLocation, NewRotation);
-
-	if (GEngine)
+	if (TickTime > 5.0f)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("%f: Location(%f, %f, %f)"), GetWorld()->TimeSeconds, NewLocation.X, NewLocation.Y, NewLocation.Z));
+		TickTime = 0.0f;
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("%f Location: %s"), GetWorld()->TimeSeconds, *NewLocation.ToString()));
+		}
 	}
 }
 
-void AFloatingActor::Move(FVector Offset) 
+void AFloatingActor::Move(FVector Offset)
 {
 	FVector NewLocation = GetActorLocation();
 	NewLocation += Offset;
 	SetActorLocation(NewLocation);
-	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, FString::Printf(TEXT("%f: Location(%f, %f, %f)"), GetWorld()->TimeSeconds, NewLocation.X, NewLocation.Y, NewLocation.Z));
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, FString::Printf(TEXT("%f Location: %s"), GetWorld()->TimeSeconds, *NewLocation.ToString()));
+	}
 }
