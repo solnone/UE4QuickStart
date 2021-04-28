@@ -25,7 +25,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UBoxComponent* BoxComponent;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* VisualMesh;
 
 	/** Scale our height by a factor of FloatSpeed. */
